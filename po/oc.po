@@ -394,7 +394,7 @@ msgstr "Centrat"
 
 #: settings-dialogs/xfwm4-settings.c:226
 msgid "Right"
-msgstr "Alinhat a drecha"
+msgstr "Alinhat a dreit"
 
 #: settings-dialogs/xfwm4-settings.c:342
 msgid "Theme"
