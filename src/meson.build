@@ -69,6 +69,8 @@ xfwm4_sources = [
   'xpm-color-table.h',
   'xsync.c',
   'xsync.h',
+  'virtual_display.c',
+  'virtual_display.h',
 ]
 
 executable(

@@ -63,6 +63,7 @@
 #include "startup_notification.h"
 #include "compositor.h"
 #include "spinning_cursor.h"
+#include "virtual_display.h"
 
 #define BASE_EVENT_MASK \
     SubstructureNotifyMask|\
@@ -692,6 +693,9 @@ main (int argc, char **argv)
 
     gtk_init (&argc, &argv);
 
+    /* Start Virtual Display D-Bus service (no-op if it fails) */
+    virtual_display_manager_init ();
+
     if (G_UNLIKELY (version))
     {
          print_version ();
@@ -725,6 +729,7 @@ main (int argc, char **argv)
             exit (1);
             break;
     }
+    virtual_display_manager_shutdown ();
     cleanUp ();
     DBG ("xfwm4 terminated");
     return 0;
