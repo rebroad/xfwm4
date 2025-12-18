@@ -1,5 +1,3 @@
-#include "config.h"
-
 #include "virtual_display.h"
 
 #include <gio/gio.h>
@@ -18,8 +16,50 @@ static GHashTable      *vdm_displays      = NULL;
 static guint            vdm_next_id       = 1;
 
 static const gchar vdm_introspection_xml[] =
-#include "../data/org.xfce.Xfwm.VirtualDisplayManager.xml"
-;
+"<node>\n"
+"  <interface name=\"org.xfce.Xfwm.VirtualDisplayManager\">\n"
+"\n"
+"    <!-- Create a virtual display and return its ID -->\n"
+"    <method name=\"CreateVirtualDisplay\">\n"
+"      <arg name=\"width\"   type=\"u\" direction=\"in\"/>\n"
+"      <arg name=\"height\"  type=\"u\" direction=\"in\"/>\n"
+"      <arg name=\"refresh\" type=\"u\" direction=\"in\"/>\n"
+"      <!-- e.g. \"desktop\", \"workspace:0\", \"monitor:HDMI-0\" -->\n"
+"      <arg name=\"source\"  type=\"s\" direction=\"in\"/>\n"
+"      <arg name=\"id\"      type=\"u\" direction=\"out\"/>\n"
+"    </method>\n"
+"\n"
+"    <!-- Destroy a previously created virtual display -->\n"
+"    <method name=\"DestroyVirtualDisplay\">\n"
+"      <arg name=\"id\" type=\"u\" direction=\"in\"/>\n"
+"    </method>\n"
+"\n"
+"    <!-- Get a handle that Breezy can capture from -->\n"
+"    <method name=\"GetVirtualDisplaySurface\">\n"
+"      <arg name=\"id\"          type=\"u\" direction=\"in\"/>\n"
+"      <!-- For now: X11 window ID or pixmap ID as uint32 -->\n"
+"      <arg name=\"surfaceId\"   type=\"u\" direction=\"out\"/>\n"
+"      <!-- e.g. \"window\", \"pixmap\", \"shm\" -->\n"
+"      <arg name=\"surfaceType\" type=\"s\" direction=\"out\"/>\n"
+"    </method>\n"
+"\n"
+"    <!-- Change which desktop/workspace/monitor is mirrored -->\n"
+"    <method name=\"SetVirtualDisplaySource\">\n"
+"      <arg name=\"id\"     type=\"u\" direction=\"in\"/>\n"
+"      <arg name=\"source\" type=\"s\" direction=\"in\"/>\n"
+"    </method>\n"
+"\n"
+"    <!-- Lifecycle signals -->\n"
+"    <signal name=\"VirtualDisplayCreated\">\n"
+"      <arg name=\"id\" type=\"u\"/>\n"
+"    </signal>\n"
+"\n"
+"    <signal name=\"VirtualDisplayDestroyed\">\n"
+"      <arg name=\"id\" type=\"u\"/>\n"
+"    </signal>\n"
+"\n"
+"  </interface>\n"
+"</node>\n";
 
 static void
 virtual_display_free (VirtualDisplay *vd)
